@@ -1,0 +1,9 @@
+test/create.js
+test/normalize-windows-path.js
+test/pack.js
+test/path-reservations.js
+test/replace.js
+test/strip-absolute-path.js
+test/unpack.js
+test/update.js
+test/write-entry.js
