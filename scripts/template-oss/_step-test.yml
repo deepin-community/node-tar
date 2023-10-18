@@ -1,0 +1,3 @@
+- name: Set Tap RC
+  run: node ./test/fixtures/taprc.js
+{{> defaultStepTest }}

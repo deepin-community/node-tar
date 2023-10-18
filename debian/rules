@@ -10,3 +10,7 @@
 override_dh_fixperms:
 	dh_fixperms
 	chmod -x debian/node-tar/usr/share/nodejs/@types/tar/*
+
+override_dh_installdocs:
+	dh_installdocs
+	dh_nodejs_autodocs

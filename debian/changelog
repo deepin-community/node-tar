@@ -1,3 +1,47 @@
+node-tar (6.1.13+~cs7.0.5-1) unstable; urgency=medium
+
+  * Team upload
+  * Update lintian override info format in d/source/lintian-overrides
+    on line 4
+  * Set upstream metadata fields: Security-Contact
+  * Declare compliance with policy 4.6.2
+  * New upstream version 6.1.13+~cs7.0.5
+
+ -- Yadd <yadd@debian.org>  Sat, 17 Dec 2022 14:53:17 +0100
+
+node-tar (6.1.12+~cs6.1.5-1) unstable; urgency=medium
+
+  * Team upload
+
+  [ Debian Janitor ]
+  * Apply multi-arch hints. + node-tar: Add Multi-Arch: foreign.
+
+  [ Yadd ]
+  * Update standards version to 4.6.1, no changes needed.
+  * Replace /releases by /tags in GitHub urls
+  * New upstream version 6.1.12+~cs6.1.5
+  * Add test dependency to node-nock
+  * Use dh_nodejs_autodocs
+
+ -- Yadd <yadd@debian.org>  Fri, 04 Nov 2022 14:43:52 +0100
+
+node-tar (6.1.11+ds1+~cs6.0.6-2) unstable; urgency=medium
+
+  * Team upload
+  * Drop useless README.source
+  * Fix test for tap >= 15 (Closes: #1009609)
+
+ -- Yadd <yadd@debian.org>  Thu, 14 Apr 2022 05:32:48 +0200
+
+node-tar (6.1.11+ds1+~cs6.0.6-1) unstable; urgency=medium
+
+  * Team upload
+  * Drop dependency to nodejs
+  * Drop embedded minipass
+  * New upstream version 6.1.11+ds1+~cs6.0.6
+
+ -- Yadd <yadd@debian.org>  Wed, 23 Feb 2022 17:59:24 +0100
+
 node-tar (6.1.11+~cs11.3.10-1) unstable; urgency=medium
 
   * Team upload
