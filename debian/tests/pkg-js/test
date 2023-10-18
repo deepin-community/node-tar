@@ -1,3 +1,2 @@
 export TAP_TIMEOUT=60
-export NODE_PATH=debian/tests/test_modules:node_modules
-tap `ls test/*.js|grep -v -f debian/tests/excluded`
+tap --no-cov -R dot test/*.js

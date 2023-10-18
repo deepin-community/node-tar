@@ -2,3 +2,4 @@ Bug-Database: https://github.com/npm/node-tar/issues
 Bug-Submit: https://github.com/npm/node-tar/issues/new
 Repository: https://github.com/npm/node-tar.git
 Repository-Browse: https://github.com/npm/node-tar
+Security-Contact: https://github.com/npm/node-tar/tree/HEAD/SECURITY.md

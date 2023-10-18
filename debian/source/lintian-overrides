@@ -1,0 +1,5 @@
+# Same author
+add-component-copyright fs-minipass *
+# test data
+very-long-line-length-in-source-file * [test/dir-normalization.tar:*]
+very-long-line-length-in-source-file test/fixtures/*

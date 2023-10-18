@@ -1,15 +1,28 @@
 'use strict'
 
 const t = require('tap')
+const nock = require('nock')
 const x = require('../lib/extract.js')
 const path = require('path')
 const fs = require('fs')
 const extractdir = path.resolve(__dirname, 'fixtures/extract')
 const tars = path.resolve(__dirname, 'fixtures/tars')
 const mkdirp = require('mkdirp')
-const {promisify} = require('util')
+const { promisify } = require('util')
 const rimraf = promisify(require('rimraf'))
 const mutateFS = require('mutate-fs')
+const pipeline = promisify(require('stream').pipeline)
+const http = require('http')
+
+const tnock = (t, host, opts) => {
+  nock.disableNetConnect()
+  const server = nock(host, opts)
+  t.teardown(function () {
+    nock.enableNetConnect()
+    server.done()
+  })
+  return server
+}
 
 t.teardown(_ => rimraf(extractdir))
 
@@ -44,9 +57,74 @@ t.test('basic extracting', t => {
 
   t.test('async cb', t => {
     return x({ file: file, cwd: dir }, files, er => {
-      if (er)
+      if (er) {
         throw er
+      }
       return check(t)
+    })
+  })
+
+  t.end()
+})
+
+t.test('ensure an open stream is not prematuraly closed', t => {
+  t.plan(1)
+
+  const file = path.resolve(tars, 'long-paths.tar')
+  const dir = path.resolve(extractdir, 'basic-with-stream')
+
+  t.beforeEach(async () => {
+    await rimraf(dir)
+    await mkdirp(dir)
+  })
+
+  const check = async t => {
+    t.ok(fs.lstatSync(dir + '/long-path'))
+    await rimraf(dir)
+    t.end()
+  }
+
+  t.test('async promisey', t => {
+    const stream = fs.createReadStream(file, {
+      highWaterMark: 1,
+    })
+    pipeline(
+      stream,
+      x({ cwd: dir })
+    ).then(_ => check(t))
+  })
+
+  t.end()
+})
+
+t.test('ensure an open stream is not prematuraly closed http', t => {
+  t.plan(1)
+
+  const file = path.resolve(tars, 'long-paths.tar')
+  const dir = path.resolve(extractdir, 'basic-with-stream-http')
+
+  t.beforeEach(async () => {
+    await rimraf(dir)
+    await mkdirp(dir)
+  })
+
+  const check = async t => {
+    t.ok(fs.lstatSync(dir + '/long-path'))
+    await rimraf(dir)
+    t.end()
+  }
+
+  t.test('async promisey', t => {
+    tnock(t, 'http://codeload.github.com/')
+      .get('/npm/node-tar/tar.gz/main')
+      .delay(250)
+      .reply(200, () => fs.createReadStream(file))
+
+    http.get('http://codeload.github.com/npm/node-tar/tar.gz/main', (stream) => {
+      return pipeline(
+        stream,
+        x({ cwd: dir })
+      ).then(_ => check(t))
     })
   })
 
@@ -87,8 +165,9 @@ t.test('file list and filter', t => {
 
   t.test('async cb', t => {
     return x({ filter: filter, file: file, cwd: dir }, ['🌟.txt', 'Ω.txt'], er => {
-      if (er)
+      if (er) {
         throw er
+      }
       return check(t)
     })
   })
@@ -127,8 +206,9 @@ t.test('no file list', t => {
 
   t.test('async cb', t => {
     return x({ file: file, cwd: dir }, er => {
-      if (er)
+      if (er) {
         throw er
+      }
       return check(t)
     })
   })
@@ -168,8 +248,9 @@ t.test('read in itty bits', t => {
 
   t.test('async cb', t => {
     return x({ file: file, cwd: dir, maxReadSize: maxReadSize }, er => {
-      if (er)
+      if (er) {
         throw er
+      }
       return check(t)
     })
   })
@@ -179,8 +260,8 @@ t.test('read in itty bits', t => {
 
 t.test('bad calls', t => {
   t.throws(_ => x(_ => _))
-  t.throws(_ => x({sync: true}, _ => _))
-  t.throws(_ => x({sync: true}, [], _ => _))
+  t.throws(_ => x({ sync: true }, _ => _))
+  t.throws(_ => x({ sync: true }, [], _ => _))
   t.end()
 })
 
@@ -188,12 +269,12 @@ t.test('no file', t => {
   const Unpack = require('../lib/unpack.js')
   t.type(x(), Unpack)
   t.type(x(['asdf']), Unpack)
-  t.type(x({sync: true}), Unpack.Sync)
+  t.type(x({ sync: true }), Unpack.Sync)
   t.end()
 })
 
 t.test('nonexistent', t => {
-  t.throws(_ => x({sync: true, file: 'does not exist' }))
+  t.throws(_ => x({ sync: true, file: 'does not exist' }))
   x({ file: 'does not exist' }).catch(_ => t.end())
 })
 
@@ -201,7 +282,7 @@ t.test('read fail', t => {
   const poop = new Error('poop')
   t.teardown(mutateFS.fail('read', poop))
 
-  t.throws(_ => x({maxReadSize: 10, sync: true, file: __filename }), poop)
+  t.throws(_ => x({ maxReadSize: 10, sync: true, file: __filename }), poop)
   t.end()
 })
 

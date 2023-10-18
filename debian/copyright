@@ -3,7 +3,7 @@ Upstream-Name: tar
 Upstream-Contact: Isaac Z. Schlueter <i@izs.me>
 Source: https://github.com/npm/node-tar
 Comment: Repackaged for easier copyright maintainability, and lower file sizes.
-Files-Excluded: 
+Files-Excluded:
  benchmarks/*
 Files-Excluded-minizlib: npm-*
 
