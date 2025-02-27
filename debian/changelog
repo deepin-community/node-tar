@@ -1,3 +1,34 @@
+node-tar (6.2.1+~cs7.0.8-1) unstable; urgency=medium
+
+  * New upstream version
+  * Bug fix: "failed to build, breaks node-minipass", thanks to Julian
+    Gilbey (Closes: #1078546).
+  * Drop patches applied upstream: CVE-2024-28863 and minipass transition
+
+ -- Bastien Roucariès <rouca@debian.org>  Mon, 12 Aug 2024 12:35:09 +0000
+
+node-tar (6.1.13+~cs7.0.5-4) unstable; urgency=medium
+
+  * Team upload
+  * Ease transition for minipass
+
+ -- Bastien Roucariès <rouca@debian.org>  Fri, 09 Aug 2024 19:31:58 +0000
+
+node-tar (6.1.13+~cs7.0.5-3) unstable; urgency=medium
+
+  * Team upload
+  * Reupload to force rebuild
+
+ -- Yadd <yadd@debian.org>  Wed, 03 Apr 2024 09:39:22 +0400
+
+node-tar (6.1.13+~cs7.0.5-2) unstable; urgency=medium
+
+  * Team upload
+  * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository-Browse
+  * Import security patch from upstream (Closes: CVE-2024-28863)
+
+ -- Yadd <yadd@debian.org>  Fri, 22 Mar 2024 16:19:13 +0400
+
 node-tar (6.1.13+~cs7.0.5-1) unstable; urgency=medium
 
   * Team upload

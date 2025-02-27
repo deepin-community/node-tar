@@ -1,5 +1,5 @@
 'use strict'
-const MiniPass = require('minipass')
+const { Minipass } = require('minipass')
 const EE = require('events').EventEmitter
 const fs = require('fs')
 
@@ -34,7 +34,7 @@ const _writing = Symbol('_writing')
 const _defaultFlag = Symbol('_defaultFlag')
 const _errored = Symbol('_errored')
 
-class ReadStream extends MiniPass {
+class ReadStream extends Minipass {
   constructor (path, opt) {
     opt = opt || {}
     super(opt)
@@ -290,7 +290,9 @@ class WriteStream extends EE {
     } else {
       this[_fd] = fd
       this.emit('open', fd)
-      this[_flush]()
+      if (!this[_writing]) {
+        this[_flush]()
+      }
     }
   }
 

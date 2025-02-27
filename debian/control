@@ -11,7 +11,7 @@ Build-Depends:
  , node-chownr <!nocheck>
  , node-end-of-stream <!nocheck>
  , node-mkdirp (>= 1)
- , node-minipass <!nocheck>
+ , node-minipass (>> 3.3.6+~cs9.4.19-3~) <!nocheck>
  , node-mutate-fs <!nocheck>
  , node-nock <!nocheck>
  , node-rimraf <!nocheck>
@@ -30,7 +30,7 @@ Depends:
  ${misc:Depends}
  , node-chownr
  , node-mkdirp (>= 1)
- , node-minipass
+ , node-minipass (>> 3.3.6+~cs9.4.19-3~)
  , node-safe-buffer
  , node-yallist (>= 4.0~)
 Provides:

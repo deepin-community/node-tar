@@ -1,9 +1,17 @@
-Description: expose old method names for backward compatibility
-Author: Jérémy Lal <kapouer@melix.org>
+From: =?utf-8?b?SsOpcsOpbXkgTGFs?= <kapouer@melix.org>
+Date: Mon, 29 Jul 2024 09:35:53 +0000
+Subject: expose old method names for backward compatibility
+
 Last-Update: 2018-06-08
 Forwarded: not-needed
---- a/index.js
-+++ b/index.js
+---
+ index.js | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+Index: node-tar/index.js
+===================================================================
+--- node-tar.orig/index.js
++++ node-tar/index.js
 @@ -1,11 +1,11 @@
  'use strict'
  

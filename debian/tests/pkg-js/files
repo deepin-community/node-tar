@@ -1,4 +1,5 @@
 debian/tests/excluded
+debian/tests/fixtures
 debian/tests/test_modules
 map.js
 README.md

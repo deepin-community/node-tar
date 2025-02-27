@@ -1,2 +1,6 @@
+TAP_TIMEOUT="${TAP_TIMEOUT:-3600}"
 export TAP_TIMEOUT=60
-tap --no-cov -R dot test/*.js
+export TAP_SNAPSHOT=1
+cp debian/tests/fixtures/excessively-deep.tar test/fixtures/ || true
+tap --no-cov -R tap test/*.js
+rm -f test/fixtures/excessively-deep.tar

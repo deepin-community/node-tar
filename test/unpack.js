@@ -5,7 +5,7 @@ process.umask(0o022)
 const Unpack = require('../lib/unpack.js')
 const UnpackSync = Unpack.Sync
 const t = require('tap')
-const MiniPass = require('minipass')
+const { Minipass } = require('minipass')
 
 const makeTar = require('./make-tar.js')
 const Header = require('../lib/header.js')
@@ -22,6 +22,7 @@ const mkdirp = require('mkdirp')
 const mutateFS = require('mutate-fs')
 const eos = require('end-of-stream')
 const normPath = require('../lib/normalize-windows-path.js')
+const ReadEntry = require('../lib/read-entry.js')
 
 // On Windows in particular, the "really deep folder path" file
 // often tends to cause problems, which don't indicate a failure
@@ -514,7 +515,8 @@ t.test('symlink in dir path', {
 
   t.test('clobber through symlink with busted unlink', t => {
     const poop = new Error('poop')
-    t.teardown(mutateFS.fail('unlink', poop))
+    // for some reason, resetting fs.unlink in the teardown was breaking
+    const reset = mutateFS.fail('unlink', poop)
     const warnings = []
     const u = new Unpack({
       cwd: dir,
@@ -523,6 +525,7 @@ t.test('symlink in dir path', {
     })
     u.on('close', _ => {
       t.same(warnings, [['TAR_ENTRY_ERROR', 'poop', poop]])
+      reset()
       t.end()
     })
     u.end(data)
@@ -2252,7 +2255,7 @@ t.test('transform', t => {
     }
   }
 
-  class Bracer extends MiniPass {
+  class Bracer extends Minipass {
     write (data) {
       const d = data.toString().split('').map(c => '[' + c + ']').join('')
       return super.write(d)
@@ -2324,7 +2327,7 @@ t.test('transform error', t => {
   const poop = new Error('poop')
 
   const txFn = () => {
-    const tx = new MiniPass()
+    const tx = new Minipass()
     tx.write = () => tx.emit('error', poop)
     tx.resume()
     return tx
@@ -3232,4 +3235,64 @@ t.test('recognize C:.. as a dot path part', t => {
   })
 
   t.end()
+})
+
+t.test('excessively deep subfolder nesting', async t => {
+  const tf = path.resolve(fixtures, 'excessively-deep.tar')
+  const data = fs.readFileSync(tf)
+  const warnings = []
+  const onwarn = (c, w, { entry, path, depth, maxDepth }) =>
+    warnings.push([c, w, { entry, path, depth, maxDepth }])
+
+  const check = (t, maxDepth = 1024) => {
+    t.match(warnings, [
+      ['TAR_ENTRY_ERROR',
+        'path excessively deep',
+        {
+          entry: ReadEntry,
+          path: /^\.(\/a){1024,}\/foo.txt$/,
+          depth: 222372,
+          maxDepth,
+        }
+      ]
+    ])
+    warnings.length = 0
+    t.end()
+  }
+
+  t.test('async', t => {
+    const cwd = t.testdir()
+    new Unpack({
+      cwd,
+      onwarn
+    }).on('end', () => check(t)).end(data)
+  })
+
+  t.test('sync', t => {
+    const cwd = t.testdir()
+    new UnpackSync({
+      cwd,
+      onwarn
+    }).end(data)
+    check(t)
+  })
+
+  t.test('async set md', t => {
+    const cwd = t.testdir()
+    new Unpack({
+      cwd,
+      onwarn,
+      maxDepth: 64,
+    }).on('end', () => check(t, 64)).end(data)
+  })
+
+  t.test('sync set md', t => {
+    const cwd = t.testdir()
+    new UnpackSync({
+      cwd,
+      onwarn,
+      maxDepth: 64,
+    }).end(data)
+    check(t, 64)
+  })
 })
