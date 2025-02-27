@@ -1,5 +1,5 @@
-Bug-Database: https://github.com/npm/node-tar/issues
-Bug-Submit: https://github.com/npm/node-tar/issues/new
+Bug-Database: https://github.com/isaacs/node-tar/issues
+Bug-Submit: https://github.com/isaacs/node-tar/issues/new
 Repository: https://github.com/npm/node-tar.git
-Repository-Browse: https://github.com/npm/node-tar
+Repository-Browse: https://github.com/isaacs/node-tar
 Security-Contact: https://github.com/npm/node-tar/tree/HEAD/SECURITY.md
