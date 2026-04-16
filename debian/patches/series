@@ -1,1 +1,8 @@
 api-backward-compatibility.patch
+adapt-to-chownr-3.patch
+CVE-2026-23745.patch
+CVE-2026-23950.patch
+CVE-2026-29786.patch
+CVE-2026-26960.patch
+CVE-2026-24842.patch
+CVE-2026-31802.patch
