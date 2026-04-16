@@ -8,10 +8,8 @@ Forwarded: not-needed
  index.js | 10 +++++-----
  1 file changed, 5 insertions(+), 5 deletions(-)
 
-Index: node-tar/index.js
-===================================================================
---- node-tar.orig/index.js
-+++ node-tar/index.js
+--- a/index.js
++++ b/index.js
 @@ -1,11 +1,11 @@
  'use strict'
  

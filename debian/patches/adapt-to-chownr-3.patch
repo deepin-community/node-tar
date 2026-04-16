@@ -1,0 +1,25 @@
+Description: Adapt to chownr 3 (named exports)
+Author: Yadd <yadd@debian.org>
+Forwarded: not-needed
+Last-Update: 2026-03-23
+
+--- a/lib/mkdir.js
++++ b/lib/mkdir.js
+@@ -7,7 +7,7 @@
+ const mkdirp = require('mkdirp')
+ const fs = require('fs')
+ const path = require('path')
+-const chownr = require('chownr')
++const { chownr, chownrSync } = require('chownr')
+ const normPath = require('./normalize-windows-path.js')
+ 
+ class SymlinkError extends Error {
+@@ -173,7 +173,7 @@
+   const done = (created) => {
+     cSet(cache, dir, true)
+     if (created && doChown) {
+-      chownr.sync(created, uid, gid)
++      chownrSync(created, uid, gid)
+     }
+     if (needChmod) {
+       fs.chmodSync(dir, mode)

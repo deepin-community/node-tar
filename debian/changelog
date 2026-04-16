@@ -1,3 +1,19 @@
+node-tar (6.2.1+~cs7.0.8-1deepin1) unstable; urgency=medium
+
+  * Fix CVE-2026-23745: Insufficient Link Path Sanitization
+  * Fix CVE-2026-23950: Race Condition in node-tar Path Reservations
+  * Fix CVE-2026-29786: Hardlink Path Traversal via Drive-Relative
+    Linkpath
+  * Fix CVE-2026-26960: Arbitrary File Read/Write via Hardlink Target
+    Escape
+  * Fix CVE-2026-24842: Arbitrary File Read/Overwrite via Hardlink Path
+    Traversal
+  * Fix CVE-2026-31802: Symlink Path Traversal via Drive-Relative
+    Linkpath
+  * Adapt to chownr 3 (named exports)
+
+ -- deepin-ci-robot <packages@deepin.org>  Fri, 17 Apr 2026 02:23:36 +0800
+
 node-tar (6.2.1+~cs7.0.8-1) unstable; urgency=medium
 
   * New upstream version
