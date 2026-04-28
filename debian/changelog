@@ -1,3 +1,11 @@
+node-tar (6.2.1+~cs7.0.8-1+deb13u1) trixie; urgency=medium
+
+  * Team upload
+  * Add patches for 6 CVEs: CVE-2026-23745, CVE-2026-23950, CVE-2026-24842,
+    CVE-2026-26960, CVE-2026-29786, CVE-2026-31802 (Closes: #1129378)
+
+ -- Xavier Guimard <yadd@debian.org>  Tue, 24 Mar 2026 12:34:05 +0100
+
 node-tar (6.2.1+~cs7.0.8-1) unstable; urgency=medium
 
   * New upstream version
